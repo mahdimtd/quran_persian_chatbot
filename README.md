@@ -1,40 +1,79 @@
-# Quran_Persian_QA 📖🧠
-## Answering questions about the Quran based on RAG system 
-Nowadays, many users utilize language models to save time and quickly access answers to their questions. Language models typically provide the best and shortest possible answer to the user's question. However, in some cases—especially when users' questions are about a specific topic or when the answer can be subjective—language models often cannot provide an accurate response. Furthermore, if they do not know the answer to a question at all, they may generate an incorrect response, believing it to be correct.It is in such cases that building chatbots which answer questions based on specific data can be effective.
-In this project, language models have been used to answer questions about the Quran based on authoritative Shia Quranic interpretation books. 
+# Quran Persian Chatbot
 
-# The steps of the work are as follows:
-1-Extraction of data from the two books: **Majma' al-Bayan** and **Majma' al-Burhan**.
+چت‌بات پرسش‌وپاسخ فارسی درباره قرآن با معماری RAG (LlamaIndex + ChromaDB + OpenRouter).
 
-2-Using **LlamaIndex** to create an index from the extracted data.
+## ویژگی‌ها
+- کد ماژولار و قابل توسعه در ساختار `src/`
+- ساخت ایندکس برداری از فایل‌های متنی تفسیری
+- چت تعاملی در ترمینال
+- مدیریت تنظیمات با متغیر محیطی
+- تست‌های پایه و CI آماده
 
-3-Using the **sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2** model to convert the data into vector space.
+## ساختار پروژه
+```text
+.
+├── src/quran_persian_chatbot/
+│   ├── cli.py
+│   ├── config.py
+│   ├── indexing.py
+│   ├── prompting.py
+│   └── rag.py
+├── tests/
+├── data/
+├── artifacts/
+├── requirements.txt
+├── requirements-dev.txt
+├── pyproject.toml
+└── .env.example
+```
 
-4-Using a language model to answer the user's question **only based on the available data**.
+## پیش‌نیاز
+- Python 3.10+
+- `uv` (اختیاری ولی پیشنهادی)
+- OpenRouter API Key
 
+## راه‌اندازی
+1. ساخت/فعال‌سازی محیط:
+```bash
+uv venv
+source .venv/bin/activate
+```
 
----
+2. نصب وابستگی‌ها:
+```bash
+uv pip install -r requirements-dev.txt
+```
 
-## How to Run the Project
+3. تنظیم متغیرهای محیطی:
+```bash
+cp .env.example .env
+# مقدار OPENROUTER_API_KEY را تکمیل کن
+```
 
-# 1. Install Requirements
+## ساخت ایندکس
+اگر فایل‌های `data/majmaolbayan.txt` و `data/alborhan.txt` را دارید:
+```bash
+PYTHONPATH=src python -m quran_persian_chatbot build-index --data-dir data --persist-dir artifacts/chroma_index
+```
 
-Make sure you have **Python 3.8** or newer installed. Then, install the required packages.
+اگر فایل‌های داده را ندارید و می‌خواهید دانلود شوند:
+```bash
+PYTHONPATH=src python -m quran_persian_chatbot build-index --download-default-data
+```
 
+## اجرای چت
+```bash
+PYTHONPATH=src python -m quran_persian_chatbot chat --persist-dir artifacts/chroma_index
+```
 
-# 2. Extract Data
+برای خروج: `quit`
 
-Download the `data.rar` file from the repository and extract it in the main project directory so that the `data/` folder is available.
+## تست و کیفیت کد
+```bash
+pytest
+ruff check .
+```
 
-# 3. Build the Index
-
-To prepare the required information retrieval index, run the `preparing_index.ipynb` Jupyter notebook. This will process the data and create necessary index files.
-
-
-# 4. Using the QA System
-
-In the web interface, you can ask questions in Persian. The system, using a Retrieval-Augmented Generation (RAG) architecture and large language models, will generate answers with relevant Quranic verses.
-
----
-
-
+## نکات GitHub
+- پوشه‌های محلی (`.venv`, `data`, `artifacts`) در `.gitignore` قرار گرفته‌اند.
+- برای اجرای CI از workflow پروژه استفاده می‌شود.
