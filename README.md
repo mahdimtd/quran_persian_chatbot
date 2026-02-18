@@ -1,15 +1,15 @@
 # Quran Persian Chatbot
 
-چت‌بات پرسش‌وپاسخ فارسی درباره قرآن با معماری RAG (LlamaIndex + ChromaDB + OpenRouter).
+A Persian Quran question-answering chatbot built with a Retrieval-Augmented Generation (RAG) pipeline using LlamaIndex, ChromaDB, and OpenRouter.
 
-## ویژگی‌ها
-- کد ماژولار و قابل توسعه در ساختار `src/`
-- ساخت ایندکس برداری از فایل‌های متنی تفسیری
-- چت تعاملی در ترمینال
-- مدیریت تنظیمات با متغیر محیطی
-- تست‌های پایه و CI آماده
+## Features
+- Modular and maintainable Python package in `src/`
+- Vector index generation from Quran interpretation text files
+- Interactive terminal chat mode
+- Environment-based configuration
+- Basic tests and CI workflow included
 
-## ساختار پروژه
+## Project Structure
 ```text
 .
 ├── src/quran_persian_chatbot/
@@ -27,53 +27,53 @@
 └── .env.example
 ```
 
-## پیش‌نیاز
+## Requirements
 - Python 3.10+
-- `uv` (اختیاری ولی پیشنهادی)
-- OpenRouter API Key
+- `uv` (optional, recommended)
+- OpenRouter API key
 
-## راه‌اندازی
-1. ساخت/فعال‌سازی محیط:
+## Setup
+1. Create and activate a virtual environment:
 ```bash
 uv venv
 source .venv/bin/activate
 ```
 
-2. نصب وابستگی‌ها:
+2. Install dependencies:
 ```bash
 uv pip install -r requirements-dev.txt
 ```
 
-3. تنظیم متغیرهای محیطی:
+3. Configure environment variables:
 ```bash
 cp .env.example .env
-# مقدار OPENROUTER_API_KEY را تکمیل کن
+# Set OPENROUTER_API_KEY in .env
 ```
 
-## ساخت ایندکس
-اگر فایل‌های `data/majmaolbayan.txt` و `data/alborhan.txt` را دارید:
+## Build the Index
+If you already have `data/majmaolbayan.txt` and `data/alborhan.txt`:
 ```bash
 PYTHONPATH=src python -m quran_persian_chatbot build-index --data-dir data --persist-dir artifacts/chroma_index
 ```
 
-اگر فایل‌های داده را ندارید و می‌خواهید دانلود شوند:
+If you want to download the default data files automatically:
 ```bash
 PYTHONPATH=src python -m quran_persian_chatbot build-index --download-default-data
 ```
 
-## اجرای چت
+## Run Chat
 ```bash
 PYTHONPATH=src python -m quran_persian_chatbot chat --persist-dir artifacts/chroma_index
 ```
 
-برای خروج: `quit`
+Type `quit` to exit.
 
-## تست و کیفیت کد
+## Test and Lint
 ```bash
 pytest
 ruff check .
 ```
 
-## نکات GitHub
-- پوشه‌های محلی (`.venv`, `data`, `artifacts`) در `.gitignore` قرار گرفته‌اند.
-- برای اجرای CI از workflow پروژه استفاده می‌شود.
+## GitHub Notes
+- Local folders like `.venv`, `data`, and `artifacts` are ignored via `.gitignore`.
+- CI is configured through GitHub Actions in `.github/workflows/python-app.yml`.
